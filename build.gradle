@@ -1,4 +1,4 @@
-description "AWS CloudFormation Resource Providers - EventSchemas"
+description "AWS CloudFormation Resource Providers - AWS::EventSchemas::RegistryPolicy "
 
 allprojects {
     version "1.0-SNAPSHOT"
