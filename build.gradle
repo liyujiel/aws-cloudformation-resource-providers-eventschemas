@@ -13,7 +13,7 @@ task release
 // Copy all resource providers to folder `packaging_additional_published_artifacts` for deployment
 def projectsToRelease = ["aws-eventschemas-registrypolicy"].collect { project(it) }
 configure(projectsToRelease) {
-    task release(dependsOn: build) {
+    task release(dependsOn: assemble) {
         group "build"
         description "Build the project and copy the RPDK package to brazil"
         doLast {
@@ -25,3 +25,4 @@ configure(projectsToRelease) {
     }
     rootProject.release.dependsOn(release)
 }
+
