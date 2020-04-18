@@ -2,11 +2,11 @@ package software.amazon.eventschemas.registrypolicy;
 
 import software.amazon.awssdk.services.schemas.model.DescribeRegistryRequest;
 import software.amazon.awssdk.services.schemas.model.DescribeRegistryResponse;
-import software.amazon.awssdk.services.schemas.model.GetPolicyRequest;
-import software.amazon.awssdk.services.schemas.model.GetPolicyResponse;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.NotFoundException;
-import software.amazon.awssdk.services.schemas.model.PutPolicyRequest;
-import software.amazon.awssdk.services.schemas.model.PutPolicyResponse;
+import software.amazon.awssdk.services.schemas.model.PutResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.PutResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -57,11 +57,11 @@ public class CreateHandlerTest {
                 .desiredResourceState(model)
                 .build();
 
-        PutPolicyResponse putPolicyResponse = PutPolicyResponse.builder()
+        PutResourcePolicyResponse putResourcePolicyResponse = PutResourcePolicyResponse.builder()
                 .policy("")
                 .revisionId("1")
                 .build();
-        GetPolicyResponse getPolicyResponse = GetPolicyResponse.builder()
+        GetResourcePolicyResponse getResourcePolicyResponse = GetResourcePolicyResponse.builder()
                 .policy("")
                 .revisionId("1")
                 .build();
@@ -70,12 +70,12 @@ public class CreateHandlerTest {
         doReturn(DescribeRegistryResponse.builder().build())
                 .when(proxy)
                 .injectCredentialsAndInvokeV2(any(DescribeRegistryRequest.class), any());
-        doThrow(NotFoundException.builder().build()).doReturn(getPolicyResponse)
+        doThrow(NotFoundException.builder().build()).doReturn(getResourcePolicyResponse)
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
-        doReturn(putPolicyResponse)
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
+        doReturn(putResourcePolicyResponse)
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(PutPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(PutResourcePolicyRequest.class), any());
 
         //WHEN
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, request, null, logger);
@@ -101,7 +101,7 @@ public class CreateHandlerTest {
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
                 .desiredResourceState(model)
                 .build();
-        PutPolicyResponse putPolicyResponse = PutPolicyResponse.builder()
+        PutResourcePolicyResponse putResourcePolicyResponse = PutResourcePolicyResponse.builder()
                 .revisionId("2")
                 .build();
         final CallbackContext outputContext = CallbackContext.builder()
@@ -116,10 +116,10 @@ public class CreateHandlerTest {
                 .injectCredentialsAndInvokeV2(any(DescribeRegistryRequest.class), any());
         doThrow(NotFoundException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
-        doReturn(putPolicyResponse)
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
+        doReturn(putResourcePolicyResponse)
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(PutPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(PutResourcePolicyRequest.class), any());
 
         //WHEN
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, request, null, logger);
@@ -173,9 +173,9 @@ public class CreateHandlerTest {
                 .when(proxy)
                 .injectCredentialsAndInvokeV2(any(DescribeRegistryRequest.class), any());
 
-        doReturn(GetPolicyResponse.builder().build())
+        doReturn(GetResourcePolicyResponse.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
 
         //WHEN
         assertThrows(CfnAlreadyExistsException.class, () ->
@@ -196,13 +196,13 @@ public class CreateHandlerTest {
         // Mock
         doThrow(NotFoundException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
         doReturn(DescribeRegistryResponse.builder().build())
                 .when(proxy)
                 .injectCredentialsAndInvokeV2(any(DescribeRegistryRequest.class), any());
         doThrow(SchemasException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(PutPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(PutResourcePolicyRequest.class), any());
 
         //WHEN
         assertThrows(CfnGeneralServiceException.class, () ->

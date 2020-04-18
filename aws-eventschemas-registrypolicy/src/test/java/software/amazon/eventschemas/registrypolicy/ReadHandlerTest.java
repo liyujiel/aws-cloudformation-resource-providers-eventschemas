@@ -1,7 +1,7 @@
 package software.amazon.eventschemas.registrypolicy;
 
-import software.amazon.awssdk.services.schemas.model.GetPolicyRequest;
-import software.amazon.awssdk.services.schemas.model.GetPolicyResponse;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.NotFoundException;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
@@ -51,15 +51,15 @@ public class ReadHandlerTest {
                 .desiredResourceState(model)
                 .build();
 
-        GetPolicyResponse getPolicyResponse = GetPolicyResponse.builder()
+        GetResourcePolicyResponse getResourcePolicyResponse = GetResourcePolicyResponse.builder()
                 .policy("{}")
                 .revisionId("1")
                 .build();
 
         // Mock
-        doReturn(getPolicyResponse)
+        doReturn(getResourcePolicyResponse)
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
 
         //WHEN
         final ProgressEvent<ResourceModel, CallbackContext> response
@@ -91,7 +91,7 @@ public class ReadHandlerTest {
         // Mock
         doThrow(NotFoundException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
 
         //WHEN
         assertThrows(CfnNotFoundException.class, () ->
@@ -113,7 +113,7 @@ public class ReadHandlerTest {
         // Mock
         doThrow(SchemasException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
 
         //WHEN
         assertThrows(CfnGeneralServiceException.class, () ->

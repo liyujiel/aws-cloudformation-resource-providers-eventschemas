@@ -1,7 +1,7 @@
 package software.amazon.eventschemas.registrypolicy;
 
-import software.amazon.awssdk.services.schemas.model.GetPolicyRequest;
-import software.amazon.awssdk.services.schemas.model.GetPolicyResponse;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
@@ -28,13 +28,13 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         final ResourceModel resourceModel = request.getDesiredResourceState();
         final String registryName = resourceModel.getId();
 
-        GetPolicyRequest getPolicyRequest = GetPolicyRequest.builder().registryName(registryName).build();
+        GetResourcePolicyRequest getResourcePolicyRequest = GetResourcePolicyRequest.builder().registryName(registryName).build();
 
         try {
-            GetPolicyResponse getPolicyResponse = proxy.injectCredentialsAndInvokeV2(getPolicyRequest, schemasClient::getPolicy);
+            GetResourcePolicyResponse getResourcePolicyResponse = proxy.injectCredentialsAndInvokeV2(getResourcePolicyRequest, schemasClient::getResourcePolicy);
 
-            resourceModel.setPolicy(getPolicyResponse.policy());
-            resourceModel.setRevisionId(getPolicyResponse.revisionId());
+            resourceModel.setPolicy(getResourcePolicyResponse.policy());
+            resourceModel.setRevisionId(getResourcePolicyResponse.revisionId());
         } catch (NotFoundException e) {
             throw new CfnNotFoundException(TYPE_NAME, registryName, e);
         } catch (SchemasException e) {

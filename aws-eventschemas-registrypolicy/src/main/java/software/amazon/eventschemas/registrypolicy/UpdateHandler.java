@@ -1,9 +1,9 @@
 package software.amazon.eventschemas.registrypolicy;
 
 import software.amazon.awssdk.services.schemas.model.ConflictException;
-import software.amazon.awssdk.services.schemas.model.GetPolicyRequest;
-import software.amazon.awssdk.services.schemas.model.PutPolicyRequest;
-import software.amazon.awssdk.services.schemas.model.PutPolicyResponse;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.PutResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.PutResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
@@ -47,10 +47,10 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
 
         if (!context.isRegistryPolicyUpdated()) {
             String revisionId = getCurrentRevisionId(registryName, proxy);
-            PutPolicyResponse putPolicyResponse = updatePolicy(registryName, revisionId, resourceModel.getPolicy(), proxy);
+            PutResourcePolicyResponse putResourcePolicyResponse = updatePolicy(registryName, revisionId, resourceModel.getPolicy(), proxy);
 
             context.setRegistryPolicyUpdated(true);
-            resourceModel.setRevisionId(putPolicyResponse.revisionId());
+            resourceModel.setRevisionId(putResourcePolicyResponse.revisionId());
 
             logger.log(String.format("%s [%s] updated successfully",
                     ResourceModel.TYPE_NAME, registryName));
@@ -78,8 +78,8 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
 
     private boolean isRegistryPolicyStabilized(String registryName, String revisionId, AmazonWebServicesClientProxy proxy) {
         try {
-            GetPolicyRequest getPolicyRequest = GetPolicyRequest.builder().registryName(registryName).build();
-            String revisionReturned = proxy.injectCredentialsAndInvokeV2(getPolicyRequest, schemasClient::getPolicy).revisionId();
+            GetResourcePolicyRequest getResourcePolicyRequest = GetResourcePolicyRequest.builder().registryName(registryName).build();
+            String revisionReturned = proxy.injectCredentialsAndInvokeV2(getResourcePolicyRequest, schemasClient::getResourcePolicy).revisionId();
             return revisionReturned.equals(revisionId);
         } catch (NotFoundException e) {
             return false;
@@ -90,8 +90,8 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
 
     private String getCurrentRevisionId(String registryName, AmazonWebServicesClientProxy proxy) {
         try {
-            GetPolicyRequest getPolicyRequest = GetPolicyRequest.builder().registryName(registryName).build();
-            return proxy.injectCredentialsAndInvokeV2(getPolicyRequest, schemasClient::getPolicy).revisionId();
+            GetResourcePolicyRequest getResourcePolicyRequest = GetResourcePolicyRequest.builder().registryName(registryName).build();
+            return proxy.injectCredentialsAndInvokeV2(getResourcePolicyRequest, schemasClient::getResourcePolicy).revisionId();
         } catch (NotFoundException e) {
             // Either Registry or Policy does not exist
             throw new CfnNotFoundException(TYPE_NAME, registryName, e);
@@ -100,10 +100,10 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
         }
     }
 
-    private PutPolicyResponse updatePolicy(String registryName, String revisionId, String policy, AmazonWebServicesClientProxy proxy) {
+    private PutResourcePolicyResponse updatePolicy(String registryName, String revisionId, String policy, AmazonWebServicesClientProxy proxy) {
         try {
-            PutPolicyRequest putPolicyRequest = PutPolicyRequest.builder().registryName(registryName).policy(policy).revisionId(revisionId).build();
-            return proxy.injectCredentialsAndInvokeV2(putPolicyRequest, schemasClient::putPolicy);
+            PutResourcePolicyRequest putResourcePolicyRequest = PutResourcePolicyRequest.builder().registryName(registryName).policy(policy).revisionId(revisionId).build();
+            return proxy.injectCredentialsAndInvokeV2(putResourcePolicyRequest, schemasClient::putResourcePolicy);
         } catch (ConflictException e) {
             throw new CfnResourceConflictException(TYPE_NAME, registryName, e.getMessage());
         } catch (SchemasException e) {

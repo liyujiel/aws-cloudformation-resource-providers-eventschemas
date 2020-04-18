@@ -2,8 +2,8 @@ package software.amazon.eventschemas.registrypolicy;
 
 import lombok.extern.java.Log;
 import software.amazon.awssdk.services.schemas.SchemasClient;
-import software.amazon.awssdk.services.schemas.model.DeletePolicyRequest;
-import software.amazon.awssdk.services.schemas.model.GetPolicyRequest;
+import software.amazon.awssdk.services.schemas.model.DeleteResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
 import software.amazon.awssdk.services.schemas.model.NotFoundException;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
@@ -67,9 +67,9 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
     }
 
     private boolean isRegistryPolicyStabilized(String registryName, AmazonWebServicesClientProxy proxy) {
-        GetPolicyRequest getPolicyRequest = GetPolicyRequest.builder().registryName(registryName).build();
+        GetResourcePolicyRequest getResourcePolicyRequest = GetResourcePolicyRequest.builder().registryName(registryName).build();
         try {
-            proxy.injectCredentialsAndInvokeV2(getPolicyRequest, schemasClient::getPolicy);
+            proxy.injectCredentialsAndInvokeV2(getResourcePolicyRequest, schemasClient::getResourcePolicy);
             return false;
         } catch (NotFoundException e) {
             return true;
@@ -80,10 +80,10 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
 
     private void deletePolicy(String registryName, AmazonWebServicesClientProxy proxy) {
         try {
-            DeletePolicyRequest deleteRegistryPolicyRequest = DeletePolicyRequest.builder()
+            DeleteResourcePolicyRequest deleteResourcePolicyRequest = DeleteResourcePolicyRequest.builder()
                     .registryName(registryName)
                     .build();
-            proxy.injectCredentialsAndInvokeV2(deleteRegistryPolicyRequest, schemasClient::deletePolicy);
+            proxy.injectCredentialsAndInvokeV2(deleteResourcePolicyRequest, schemasClient::deleteResourcePolicy);
         } catch (NotFoundException e) {
             throw new CfnNotFoundException(TYPE_NAME, registryName, e);
         } catch (SchemasException e) {

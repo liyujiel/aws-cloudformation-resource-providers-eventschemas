@@ -1,9 +1,9 @@
 package software.amazon.eventschemas.registrypolicy;
 
-import software.amazon.awssdk.services.schemas.model.DeletePolicyRequest;
-import software.amazon.awssdk.services.schemas.model.DeletePolicyResponse;
-import software.amazon.awssdk.services.schemas.model.GetPolicyRequest;
-import software.amazon.awssdk.services.schemas.model.GetPolicyResponse;
+import software.amazon.awssdk.services.schemas.model.DeleteResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.DeleteResourcePolicyResponse;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
+import software.amazon.awssdk.services.schemas.model.GetResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.NotFoundException;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -53,12 +53,12 @@ public class DeleteHandlerTest {
                 .build();
 
         //Mock
-        doReturn(DeletePolicyResponse.builder().build())
+        doReturn(DeleteResourcePolicyResponse.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeletePolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(DeleteResourcePolicyRequest.class), any());
         doThrow(NotFoundException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
 
         final ProgressEvent<ResourceModel, CallbackContext> response
                 = handler.handleRequest(proxy, request, null, logger);
@@ -91,12 +91,12 @@ public class DeleteHandlerTest {
                 .build();
 
         // Mock
-        doReturn(DeletePolicyResponse.builder().build())
+        doReturn(DeleteResourcePolicyResponse.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeletePolicyRequest.class), any());
-        doReturn(GetPolicyResponse.builder().build())
+                .injectCredentialsAndInvokeV2(any(DeleteResourcePolicyRequest.class), any());
+        doReturn(GetResourcePolicyResponse.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(GetPolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(GetResourcePolicyRequest.class), any());
 
         //WHEN
         final ProgressEvent<ResourceModel, CallbackContext> response = handler.handleRequest(proxy, request, null, logger);
@@ -126,7 +126,7 @@ public class DeleteHandlerTest {
         // Mock
         doThrow(NotFoundException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeletePolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(DeleteResourcePolicyRequest.class), any());
 
         //WHEN
         assertThrows(CfnNotFoundException.class, () ->
@@ -147,7 +147,7 @@ public class DeleteHandlerTest {
         // Mock
         doThrow(SchemasException.builder().build())
                 .when(proxy)
-                .injectCredentialsAndInvokeV2(any(DeletePolicyRequest.class), any());
+                .injectCredentialsAndInvokeV2(any(DeleteResourcePolicyRequest.class), any());
 
         //WHEN
         assertThrows(CfnGeneralServiceException.class, () ->
