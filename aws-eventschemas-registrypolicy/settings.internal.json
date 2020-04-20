@@ -1,0 +1,5 @@
+{
+  "FasPolicyPath": {
+    "aws": "/policies/AuthRuntime/authNPolicy/schemas-preprod"
+  }
+}

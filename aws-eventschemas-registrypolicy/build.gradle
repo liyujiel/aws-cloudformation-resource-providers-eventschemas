@@ -71,6 +71,9 @@ task cfnPackage(type: Exec) {
 task rpdkPackage(type: Zip) {
     dependsOn cfnPackage
     from zipTree("${resource_name}.zip")
+    from ("${rootDir}/aws-eventschemas-registrypolicy") {
+        include "settings.internal.json"
+    }    
     destinationDir = file('./build/rpdk')
     archiveName("${resource_name}.zip")
 }
