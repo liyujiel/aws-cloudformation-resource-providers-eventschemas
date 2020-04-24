@@ -1,5 +1,7 @@
 package software.amazon.eventschemas.registrypolicy;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.services.schemas.model.DescribeRegistryRequest;
 import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
 import software.amazon.awssdk.services.schemas.model.NotFoundException;
@@ -8,6 +10,7 @@ import software.amazon.awssdk.services.schemas.model.PutResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
 import software.amazon.cloudformation.exceptions.CfnAlreadyExistsException;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
+import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -22,6 +25,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
 
     private static final int CALLBACK_DELAY_SECONDS = 30;
     private static final int NUMBER_OF_CREATE_POLL_RETRIES = 3;
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final SchemasClient schemasClient = ClientBuilder.getSchemasClient();
 
@@ -113,10 +117,13 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         }
     }
 
-    private PutResourcePolicyResponse putPolicy(String registryName, String policy, AmazonWebServicesClientProxy proxy) {
+    private PutResourcePolicyResponse putPolicy(String registryName, Object policyObject, AmazonWebServicesClientProxy proxy) {
         try {
+            String policy = MAPPER.writeValueAsString(policyObject);
             PutResourcePolicyRequest putResourcePolicyRequest = PutResourcePolicyRequest.builder().registryName(registryName).policy(policy).build();
             return proxy.injectCredentialsAndInvokeV2(putResourcePolicyRequest, schemasClient::putResourcePolicy);
+        } catch (JsonProcessingException e) {
+            throw new CfnInvalidRequestException(e);
         } catch (SchemasException e) {
             throw new CfnGeneralServiceException("CreateRegistryPolicy", e);
         }

@@ -1,5 +1,6 @@
 package software.amazon.eventschemas.registrypolicy;
 
+import org.json.JSONObject;
 import software.amazon.awssdk.services.schemas.model.GetResourcePolicyRequest;
 import software.amazon.awssdk.services.schemas.model.GetResourcePolicyResponse;
 import software.amazon.awssdk.services.schemas.model.SchemasException;
@@ -32,8 +33,9 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         try {
             GetResourcePolicyResponse getResourcePolicyResponse = proxy.injectCredentialsAndInvokeV2(getResourcePolicyRequest, schemasClient::getResourcePolicy);
+            JSONObject policyObject = new JSONObject(getResourcePolicyResponse.policy());
 
-            resourceModel.setPolicy(getResourcePolicyResponse.policy());
+            resourceModel.setPolicy(policyObject.toMap());
             resourceModel.setRevisionId(getResourcePolicyResponse.revisionId());
         } catch (NotFoundException e) {
             throw new CfnNotFoundException(TYPE_NAME, registryName, e);
