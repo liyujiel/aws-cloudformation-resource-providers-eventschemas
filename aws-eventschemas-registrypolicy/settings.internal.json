@@ -1,5 +1,5 @@
 {
   "FasPolicyPath": {
-    "aws": "/policies/AuthRuntime/authNPolicy/schemas-preprod"
+    "aws": "/policies/AuthRuntime/authNPolicy/schemas-preprod/cloudformation.2020-04-17-18-48-38"
   }
 }
