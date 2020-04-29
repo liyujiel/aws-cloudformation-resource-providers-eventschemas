@@ -29,26 +29,26 @@
   "handlers": {
     "create": {
       "permissions": [
-        "schemas-preprod:PutResourcePolicy",
-        "schemas-preprod:GetResourcePolicy",
-        "schemas-preprod:DescribeRegistry"
+        "schemas:PutResourcePolicy",
+        "schemas:GetResourcePolicy",
+        "schemas:DescribeRegistry"
       ]
     },
     "delete": {
       "permissions": [
-        "schemas-preprod:DeleteResourcePolicy",
-        "schemas-preprod:GetResourcePolicy"
+        "schemas:DeleteResourcePolicy",
+        "schemas:GetResourcePolicy"
       ]
     },
     "update": {
       "permissions": [
-        "schemas-preprod:PutResourcePolicy",
-        "schemas-preprod:GetResourcePolicy"
+        "schemas:PutResourcePolicy",
+        "schemas:GetResourcePolicy"
       ]
     },
     "read": {
       "permissions": [
-        "schemas-preprod:GetResourcePolicy"
+        "schemas:GetResourcePolicy"
       ]
     }
   }

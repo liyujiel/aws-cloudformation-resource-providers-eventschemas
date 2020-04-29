@@ -23,10 +23,10 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "schemas-preprod:DeleteResourcePolicy"
-                - "schemas-preprod:DescribeRegistry"
-                - "schemas-preprod:GetResourcePolicy"
-                - "schemas-preprod:PutResourcePolicy"
+                - "schemas:DeleteResourcePolicy"
+                - "schemas:DescribeRegistry"
+                - "schemas:GetResourcePolicy"
+                - "schemas:PutResourcePolicy"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:
