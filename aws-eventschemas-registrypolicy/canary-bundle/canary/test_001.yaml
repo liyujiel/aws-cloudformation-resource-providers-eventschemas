@@ -10,7 +10,7 @@ Resources:
           Sid: 1
           Effect: Allow
           Principal:
-            AWS: arn:aws:iam::245548786346:user/TestAccountForRegistryPolicy
+            AWS: arn:aws:iam::444911694473:user/TestAccountForRegistryPolicy
           Action:
             - schemas:DescribeRegistry
             - schemas:CreateSchema
