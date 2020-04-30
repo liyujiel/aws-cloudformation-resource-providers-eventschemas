@@ -1,0 +1,22 @@
+Resources:
+
+  RegistryResource:
+    Type: AWS::EventSchemas::Registry
+    Properties:
+      Description:'Registry resource that canary depends on for registryPolicy resource stack operations'
+
+Outputs:
+
+  RegistryName:
+    Description: The name of the registry
+    Value:
+      Fn::GetAtt: RegistryResource.RegistryName
+    Export:
+      Name: RegistryName
+
+  RegistryArn:
+    Description: The arn of the registry
+    Value:
+      Fn::GetAtt: RegistryResource.RegistryArn
+    Export:
+      Name: RegistryArn

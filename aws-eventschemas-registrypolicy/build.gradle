@@ -71,9 +71,11 @@ task cfnPackage(type: Exec) {
 task rpdkPackage(type: Zip) {
     dependsOn cfnPackage
     from zipTree("${resource_name}.zip")
+    // Inject internal files
     from ("${rootDir}/aws-eventschemas-registrypolicy") {
         include "settings.internal.json"
-    }    
+        include "canary-bundle/**/*"
+    }
     destinationDir = file('./build/rpdk')
     archiveName("${resource_name}.zip")
 }

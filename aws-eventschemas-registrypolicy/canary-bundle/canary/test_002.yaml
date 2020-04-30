@@ -1,0 +1,18 @@
+Resources:
+  RegistryPolicy:
+    Type: AWS::EventSchemas::RegistryPolicy
+    Properties:
+      RegistryName:
+        Fn::ImportValue: RegistryName
+      Policy:
+        Version: 2012-10-17
+        Statement:
+          Sid: 2
+          Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::245548786346:user/TestAccountForRegistryPolicy
+          Action:
+            - schemas:DescribeRegistry
+            - schemas:UpdateSchema
+          Resource:
+            Fn::ImportValue: RegistryArn
