@@ -1,9 +1,8 @@
 Resources:
-
   RegistryResource:
     Type: AWS::EventSchemas::Registry
     Properties:
-      Description:'Registry resource that canary depends on for registryPolicy resource stack operations'
+      Description: Registy resource that canary depends on for registryPolicy resource stack operations
 
 Outputs:
 
