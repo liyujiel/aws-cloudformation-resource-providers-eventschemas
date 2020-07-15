@@ -32,7 +32,7 @@ package.AWSCloudFormationResourceProvidersEventSchemas = {
   dependencies = {
     1.0 = {
       AWSCloudFormationRPDKJavaPlugin = 1.1;
-      # Your SDK here, e.g. AwsJavaSdk-Ses = 2.0;
+      AwsJavaSdk-Schemas = 2.0;
     };
   };
 
