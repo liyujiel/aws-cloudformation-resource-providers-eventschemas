@@ -10,6 +10,7 @@
             "amazon",
             "eventschemas",
             "registrypolicy"
-        ]
+        ],
+        "protocolVersion": "2.0.0"
     }
 }

@@ -22,15 +22,15 @@ package.AWSCloudFormationResourceProvidersSchemas = {
       BrazilGradle = 4.x;
       GradleShadow = 4.x;
       JDK8 = 1.0;
-      AWSCloudFormationRPDK = 1.1;
-      AWSCloudFormationRPDKJavaPluginTool = 1.1;
+      AWSCloudFormationRPDK = 2.0;
+      AWSCloudFormationRPDKJavaPluginTool = 2.0;
       BrazilPath = 1.1;
     };
   };
 
   dependencies = {
     1.0 = {
-      AWSCloudFormationRPDKJavaPlugin = 1.1;
+      AWSCloudFormationRPDKJavaPlugin = 2.0;
       AwsJavaSdk-Schemas = 2.0;
     };
   };
